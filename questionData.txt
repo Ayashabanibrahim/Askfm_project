@@ -1,0 +1,9 @@
+Where are you from,aya?
+10
+3
+which color you love ?
+10
+3
+which your goal in life?
+3
+10
