@@ -5,7 +5,7 @@
 #include<string>
 #include<fstream>
 #include<stdlib.h>
-
+#include<algorithm>
 using namespace std;
 struct user_data{
     string name,uname,pass;
@@ -160,9 +160,8 @@ public:
                 getline(answerIn,anss);
                 if(!anss.empty()){
                 res.QA=anss;
-                c2++;
-
-         }
+                 c2++;
+                }
             }
             else if(c2%3==2)
             {
@@ -245,6 +244,22 @@ public:
           user1.pass='0';
           user1.uname='0';
       }
+       bool checked(int t)
+          {
+              int bo=0;
+              for(int i=0;i<user.size();i++)
+              {
+                  if(t==user[i].id)
+                  {
+                      bo=1;
+                      return true;
+                      break;
+                  }
+
+              }
+              if(bo==0)
+              return false;
+          }
       void sginup()
       {
           readus();
@@ -256,6 +271,17 @@ public:
           cin>>user1.pass;
           cout<<"Enter Your ID\n";
           cin>>user1.id;
+            int idd=user1.id;
+          if(checked(idd))
+          {
+            while(checked(idd))
+          {
+
+              cout<<"This ID Has Already Been Used...Try Different ID!\n";
+              cin>>idd;
+          }
+         }
+          user1.id=idd;
           user.push_back(user1);
           upuser();
       }
@@ -291,6 +317,7 @@ public:
               cout<<"User Name : "<<user[i].uname<<"  "<<"User's ID : "<<user[i].id<<"\n";
           }
       }
+
       void ask()
       {
           readus();
@@ -312,6 +339,7 @@ public:
               cout<<"You Can't Ask Yourself...!!\n";
           }
           else{
+         if(checked(toId)){
           cout<<"Please,Enter Your Question!\n";
           cin.ignore();
           getline(cin,p);
@@ -322,6 +350,11 @@ public:
           Ques.push_back(Q);
           upques();
           }
+          else
+          {
+              cout<<"Error,Not Found This User's ID..!!\n";
+          }
+          }
           }
       }
       void que_I_ask()
@@ -331,8 +364,7 @@ public:
           readAnsQues();
           readans();
             bool b;
-
-for(int i=0;i<Ques.size();i++)
+        for(int i=0;i<Ques.size();i++)
           {
               if(Ques[i].idf==user1.id)
               {
@@ -428,8 +460,13 @@ for(int i=0;i<Ques.size();i++)
               }
           }
 
-cout<<"Enter Number Question You Want To Answer.\n";
+       cout<<"Enter Number Question You Want To Answer.\n";
           cin>>numQues;
+         if(mp.find(numQues)==mp.end())
+          {
+              cout<<"Error This Number Of Question Not Found..!!\n";
+              return;
+          }
           int indx=numQues;
           numQues=mp[indx];
           if(papl.find(Ques[numQues].QA)!=papl.end())
@@ -458,6 +495,7 @@ cout<<"Enter Number Question You Want To Answer.\n";
               }
               return;
           }
+
           QR q_r;
           q_r.qa=Ques[numQues].QA;
           string r;
@@ -571,7 +609,8 @@ int main()
     }
         }
     }
-cout<<"Menu:\n";
+
+     cout<<"Menu:\n";
         cout<<"1: Print Questions To Me\n"<<
         "2: Print Qurstions From Me\n"<<
         "3: Answer Question\n"<<
@@ -615,9 +654,9 @@ cout<<"Menu:\n";
     cout<<"Enter number in range 1 - 2:";
     cin>>op;
     if(op==1)
-        person.sginup();
-    else if(op==2)
         person.sginin();
+    else if(op==2)
+        person.sginup();
     else
     {
     while(!(op>=1&&op<=2))
@@ -657,9 +696,6 @@ cout<<"Menu:\n";
         }
 
         }
-
-
-
 
     return 0;
 }
