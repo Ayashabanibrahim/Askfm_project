@@ -13,4 +13,6 @@
 - Displaying all answerd questions 
 - Displaying the List of users 
 - Logout
-# 
+ # Notes
+ ## This system can be accessed by more than one user at the same time
+# I would be grateful if you would give your feedback
