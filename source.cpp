@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include<map>
 #include<vector>
@@ -5,7 +6,7 @@
 #include<string>
 #include<fstream>
 #include<stdlib.h>
-#include<algorithm>
+#include<algorithm>>
 using namespace std;
 struct user_data{
     string name,uname,pass;
@@ -160,7 +161,7 @@ public:
                 getline(answerIn,anss);
                 if(!anss.empty()){
                 res.QA=anss;
-                 c2++;
+                c2++;
                 }
             }
             else if(c2%3==2)
@@ -246,20 +247,41 @@ public:
       }
        bool checked(int t)
           {
-              int bo=0;
               for(int i=0;i<user.size();i++)
               {
                   if(t==user[i].id)
                   {
-                      bo=1;
                       return true;
-                      break;
                   }
 
               }
-              if(bo==0)
               return false;
           }
+           bool checkedPaa(string t)
+          {
+              for(int i=0;i<user.size();i++)
+              {
+                  if(t==user[i].pass)
+                  {
+                      return true;
+                  }
+
+              }
+              return false;
+          }
+           bool checkedNam(string t)
+          {
+              for(int i=0;i<user.size();i++)
+              {
+                  if(t==user[i].uname)
+                  {
+                      return true;
+                  }
+
+              }
+              return false;
+          }
+
       void sginup()
       {
           readus();
@@ -267,8 +289,30 @@ public:
           cin>>user1.name;
           cout<<"Enter Your User Name \n";
           cin>>user1.uname;
+          string unamee=user1.uname;
+          if(checkedNam(unamee))
+          {
+            while(checkedNam(unamee))
+          {
+
+              cout<<"This User Name Has Already Been Used...Try Different User Name!\n";
+              cin>>unamee;
+          }
+         }
+          user1.uname=unamee;
           cout<<"Enter Your Password \n";
           cin>>user1.pass;
+          string pss=user1.pass;
+          if(checkedPaa(pss))
+          {
+            while(checkedPaa(pss))
+          {
+
+              cout<<"This Password Has Already Been Used...Try Different Password!\n";
+              cin>>pss;
+          }
+         }
+          user1.pass=pss;
           cout<<"Enter Your ID\n";
           cin>>user1.id;
             int idd=user1.id;
@@ -276,8 +320,7 @@ public:
           {
             while(checked(idd))
           {
-
-              cout<<"This ID Has Already Been Used...Try Different ID!\n";
+      cout<<"This ID Has Already Been Used...Try Different ID!\n";
               cin>>idd;
           }
          }
@@ -317,6 +360,30 @@ public:
               cout<<"User Name : "<<user[i].uname<<"  "<<"User's ID : "<<user[i].id<<"\n";
           }
       }
+      void feed()
+      {
+          readus();
+          readques();
+          readAnsQues();
+          readans();
+          int qnum=0;
+          if(Ques.size()==0)
+            cout<<"Not Found Any Questions..!\n";
+          else
+        {
+          for(int i=0;i<Ques.size();i++)
+          {
+              qnum++;
+              cout<<"Question("<<qnum<<")"<<" From User ID("<<Ques[i].idf<<")"<<" To User ID("<<Ques[i].idt<<")"<<
+              "\nQuestion: "<<Ques[i].QA<<"?\n";
+              string n=Ques[i].QA;
+              if(papl.find(n)!=papl.end())
+                cout<<"Answer: "<<papl[n]<<".\n";
+              else
+                cout<<"Not Answerd Yet\n";
+          }
+        }
+      }
 
       void ask()
       {
@@ -342,7 +409,7 @@ public:
          if(checked(toId)){
           cout<<"Please,Enter Your Question!\n";
           cin.ignore();
-          getline(cin,p);
+          getline(cin,p,'?');
           question Q;
           Q.QA=p;
           Q.idf=user1.id;
@@ -391,7 +458,8 @@ public:
           }
           else cout<<"Not Found Question From You!\n";
 
-      }
+
+     }
       void forQuse()
       {
           readus();
@@ -460,7 +528,7 @@ public:
               }
           }
 
-       cout<<"Enter Number Question You Want To Answer.\n";
+          cout<<"Enter Number Question You Want To Answer.\n";
           cin>>numQues;
          if(mp.find(numQues)==mp.end())
           {
@@ -495,8 +563,7 @@ public:
               }
               return;
           }
-
-          QR q_r;
+         QR q_r;
           q_r.qa=Ques[numQues].QA;
           string r;
           cout<<"Enter your answer \n";
@@ -522,6 +589,61 @@ public:
           readques();
           readAnsQues();
           readans();
+          int opdelet;
+          cout<<"1:Delete Answer \n2:Delete Question With It's Answer\nEnter Number in Range 1 - 2:";
+          cin>>opdelet;
+          if(opdelet==1)
+          {
+          int n=0,nums=0;
+          map<int,int> m;
+          bool b;
+        for(int i=0;i<Ques.size();i++)
+          {
+              if(Ques[i].idt==user1.id&&papl.find(Ques[i].QA)!=papl.end())
+              {
+                  b=1;
+                  break;
+              }
+          }
+          if(b)
+          {
+          for(int i=0;i<Ques.size();i++)
+          {
+              if(Ques[i].idt==user1.id&&papl.find(Ques[i].QA)!=papl.end())
+                {
+                    nums++;
+              cout<<"Question Number "<<nums<<":"<<Ques[i].QA<<"?\n";
+              m[nums]=i;
+                cout<<"Answer:"<<papl[Ques[i].QA]<<"\n";
+
+              }
+          }
+          cout<<"Enter Number Of Question You Want To Delete It's Answer\n";
+          cin>>n;
+          if(m.find(n)==m.end())
+          {
+              cout<<"Error This Number Of Question Not Found..!!\n";
+              return;
+          }
+          n=m[n];
+          string Qe=Ques[n].QA;
+          for(int i=0;i<ansQa.size();i++)
+          {
+              if(ansQa[i].qa==Qe)
+                ansQa.erase(ansQa.begin()+i);
+          }
+          papl.erase(Qe);
+          cout<<"Answer is Deleted Successfully..\n";
+          upansw();
+          upanswQes();
+          }
+          else
+          {
+              cout<<"Not Found Any Question To Delete It's Answer\n";
+          }
+          }
+          else if(opdelet==2)
+        {
           int n=0,nums=0;
           map<int,int> m;
           bool b;
@@ -573,6 +695,7 @@ public:
           {
               cout<<"Not Found Questions To Delete Them\n";
           }
+        }
       }
 
 };
@@ -610,16 +733,17 @@ int main()
         }
     }
 
-     cout<<"Menu:\n";
+    cout<<"Menu:\n";
         cout<<"1: Print Questions To Me\n"<<
         "2: Print Qurstions From Me\n"<<
         "3: Answer Question\n"<<
         "4: Delet Question\n"<<
         "5: Ask Question \n"<<
         "6: List System Users\n"<<
-        "7: Logout\n"<<
-        "8: Exit From Program\n";
-        cout<<"Enter number in range 1 - 8:";
+        "7: Feed\n"<<
+        "8: Logout\n"<<
+        "9: Exit From Program\n";
+        cout<<"Enter number in range 1 - 9:";
         int option;
 
         while(true)
@@ -644,6 +768,9 @@ int main()
               person.lists();
 
         else if(option==7)
+            person.feed();
+
+        else if(option==8)
         {
                cout<<"Logout successfully\n";
                cout<<" \n\n";
@@ -680,12 +807,13 @@ int main()
         "4: Delet Question\n"<<
         "5: Ask Question \n"<<
         "6: List System Users\n"<<
-        "7: Logout\n"<<
-        "8: Exit From Program\n";
+        "7: Feed\n"<<
+        "8: Logout\n"<<
+        "9: Exit From Program\n";
 
-        cout<<"Enter number in range 1 - 8\n";
+        cout<<"Enter number in range 1 - 9\n";
         }
-        else if(option==8)
+        else if(option==9)
         {
             cout<<"SEE YOU SOON...!\n";
             break;
@@ -696,6 +824,9 @@ int main()
         }
 
         }
+
+
+
 
     return 0;
 }
